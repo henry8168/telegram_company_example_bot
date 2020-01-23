@@ -37,3 +37,6 @@ Note: 此專案適合中小規模粉絲數的單位。
 
 現成的範例:  
 https://t.me/company_example_bot  
+
+我的實驗室：
+https://t.me/HenryLab

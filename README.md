@@ -23,7 +23,7 @@
 1. 使用 https://t.me/BotFather 免費  
    建立屬於貴單位的 Telegram bot  
 2. 建立一個 Google 文件  
-3. 建立一個 Google 試算表  
+3. 建立一個 Google 試算表(表命名為「fans list」，第一列第一行寫「uid」)  
 4. 建立一個 Google Apps Script  
 5. 將本網站的檔案全部複製過去，  
    並填上 author_setting.gs 和 logging.gs 需求的欄位。  

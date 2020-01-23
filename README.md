@@ -1,4 +1,4 @@
-# Telegram Company Example Bot
+# Telegram Company Example Bot on Google Apps Script
 提供新加入 Telegram 的企業免費的機器人互動範本
 
 很多從 Line 轉來 Telegram 的企業會有以下幾種需求:

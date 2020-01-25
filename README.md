@@ -27,7 +27,7 @@
 4. 建立一個 Google Apps Script  
 5. 將本網站的檔案全部複製過去，  
    並填上 author_setting.gs 和 logging.gs 需求的欄位。  
-6. 部屬您的 Google Apps Script 到網路上。  
+6. 部屬您的 Google Apps Script 到網路上。(任何人，甚至匿名使用者)  
 7. 到 tools.gs 手動執行一次 setWebhook()，  
    即完成與 TG bot 的連結。  
 

@@ -1,71 +1,114 @@
-function broadcast_msg(msg){
-  var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
-  var Sheet = SpreadSheet.getSheetByName("fans list");
-  var lastRow = Sheet.getLastRow();
-  var start_row = 2
-  for(start_row=2; start_row<=lastRow; start_row++){
-    this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
-    send_msg(this_uid, msg)
+function broadcast_msg(msg, forward_admin){
+  if(forward_admin){
+    for(var i=0; i<Admins_UID.length; i++){
+      forward_msg(Admins_UID[i], forward_admin.from_chat, forward_admin.the_message_id)
+    }
+  }
+  else{
+    var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
+    var Sheet = SpreadSheet.getSheetByName("fans list");
+    var lastRow = Sheet.getLastRow();
+    var start_row = 2
+    for(start_row=2; start_row<=lastRow; start_row++){
+      this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
+      send_msg(this_uid, msg)
+    }
   }
   return 0
 }
 
-function broadcast_photo(file_id){
-  var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
-  var Sheet = SpreadSheet.getSheetByName("fans list");
-  var lastRow = Sheet.getLastRow();
-  var start_row = 2
-  for(start_row=2; start_row<=lastRow; start_row++){
-    this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
-    send_photo(this_uid, file_id)
+function broadcast_photo(file_id, forward_admin){
+  if(forward_admin){
+    for(var i=0; i<Admins_UID.length; i++){
+      forward_msg(Admins_UID[i], forward_admin.from_chat, forward_admin.the_message_id)
+    }
+  }
+  else{
+    var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
+    var Sheet = SpreadSheet.getSheetByName("fans list");
+    var lastRow = Sheet.getLastRow();
+    var start_row = 2
+    for(start_row=2; start_row<=lastRow; start_row++){
+      this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
+      send_photo(this_uid, file_id)
+    }
   }
   return 0
 }
 
-function broadcast_sticker(file_id){
-  var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
-  var Sheet = SpreadSheet.getSheetByName("fans list");
-  var lastRow = Sheet.getLastRow();
-  var start_row = 2
-  for(start_row=2; start_row<=lastRow; start_row++){
-    this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
-    send_sticker(this_uid, file_id)
+function broadcast_sticker(file_id, forward_admin){
+  if(forward_admin){
+    for(var i=0; i<Admins_UID.length; i++){
+      send_msg(Admins_UID[i], "來自 "+forward_admin.first_name+" 的貼圖")
+      forward_msg(Admins_UID[i], forward_admin.from_chat, forward_admin.the_message_id)
+    }
+  }
+  else{
+    var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
+    var Sheet = SpreadSheet.getSheetByName("fans list");
+    var lastRow = Sheet.getLastRow();
+    var start_row = 2
+    for(start_row=2; start_row<=lastRow; start_row++){
+      this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
+      send_sticker(this_uid, file_id)
+    }
   }
   return 0
 }
 
-function broadcast_voice(file_id){
-  var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
-  var Sheet = SpreadSheet.getSheetByName("fans list");
-  var lastRow = Sheet.getLastRow();
-  var start_row = 2
-  for(start_row=2; start_row<=lastRow; start_row++){
-    this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
-    send_voice(this_uid, file_id)
+function broadcast_voice(file_id, forward_admin){
+  if(forward_admin){
+    for(var i=0; i<Admins_UID.length; i++){
+      forward_msg(Admins_UID[i], forward_admin.from_chat, forward_admin.the_message_id)
+    }
+  }
+  else{
+    var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
+    var Sheet = SpreadSheet.getSheetByName("fans list");
+    var lastRow = Sheet.getLastRow();
+    var start_row = 2
+    for(start_row=2; start_row<=lastRow; start_row++){
+      this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
+      send_voice(this_uid, file_id)
+    }
   }
   return 0
 }
 
-function broadcast_video_note(file_id){
-  var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
-  var Sheet = SpreadSheet.getSheetByName("fans list");
-  var lastRow = Sheet.getLastRow();
-  var start_row = 2
-  for(start_row=2; start_row<=lastRow; start_row++){
-    this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
-    send_video_note(this_uid, file_id)
+function broadcast_video_note(file_id, forward_admin){
+  if(forward_admin){
+    for(var i=0; i<Admins_UID.length; i++){
+      forward_msg(Admins_UID[i], forward_admin.from_chat, forward_admin.the_message_id)
+    }
+  }
+  else{
+    var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
+    var Sheet = SpreadSheet.getSheetByName("fans list");
+    var lastRow = Sheet.getLastRow();
+    var start_row = 2
+    for(start_row=2; start_row<=lastRow; start_row++){
+      this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
+      send_video_note(this_uid, file_id)
+    }
   }
   return 0
 }
 
-function broadcast_document(file_id){
-  var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
-  var Sheet = SpreadSheet.getSheetByName("fans list");
-  var lastRow = Sheet.getLastRow();
-  var start_row = 2
-  for(start_row=2; start_row<=lastRow; start_row++){
-    this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
-    send_document(this_uid, file_id)
+function broadcast_document(file_id, forward_admin){
+  if(forward_admin){
+    for(var i=0; i<Admins_UID.length; i++){
+      forward_msg(Admins_UID[i], forward_admin.from_chat, forward_admin.the_message_id)
+    }
+  }
+  else{
+    var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
+    var Sheet = SpreadSheet.getSheetByName("fans list");
+    var lastRow = Sheet.getLastRow();
+    var start_row = 2
+    for(start_row=2; start_row<=lastRow; start_row++){
+      this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
+      send_document(this_uid, file_id)
+    }
   }
   return 0
 }
@@ -202,12 +245,31 @@ function send_document(uid, file_id){
   return res
 }
 
+function forward_msg(target_chat, from_chat, the_message_id){
+  var payload = {
+    method: "forwardMessage",
+    chat_id: String(target_chat),
+    from_chat_id: String(from_chat),
+    message_id: the_message_id
+  }
+  var data = {
+    method: "post",
+    payload: payload
+  }
+  var res = retryFetch("https://api.telegram.org/bot"+tg_token+"/", data);
+  if(!res){
+    log.ERR("retryFetch() failed", "tools.forward_msg")
+    return undefined
+  }
+  return res
+}
+
 function send_fans_number(uid){
   var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
   var Sheet = SpreadSheet.getSheetByName("fans list");
   var lastRow = Sheet.getLastRow();
   var keyboard = undefined
-  if(uid != Author_UID){
+  if(Admins_UID.indexOf(uid) < 0){
     keyboard = keyboard_home
   }
   else{
@@ -264,7 +326,7 @@ function join(uid, row_t){
   var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
   var Sheet = SpreadSheet.getSheetByName("fans list");
   var lastRow = Sheet.getLastRow();
-  var msg = "開始追隨"
+  var msg = "開啟追隨"
   setSheetVal("fans list", lastRow+1, _getItemColInFansList("uid"), String(uid))
   send_msg(uid, msg)
   return 0
@@ -362,7 +424,9 @@ function setSheetVal(sheetName, row, col, val){
 function crash_notification(err_msg){
   msg = "[crash] "+PROGRAM_NAME+" crashed. err: "+err_msg
   log.ERR(msg, "tools.crash_notification")
-  send_msg(Author_UID, msg)
+  for(var i=0; i<Admins_UID.length; i++){
+    send_msg(Admins_UID[i], msg)
+  }
   return 0
 }
 

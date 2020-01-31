@@ -15,7 +15,8 @@ function doPost(e){
   else if(rcv_message.text == "👍粉絲人數"){
     send_fans_number(rcv_from.id)
   }
-  else if(rcv_from.id == Author_UID){
+  else if(Admins_UID.indexOf(rcv_from.id) >= 0){
+    // admins block
     send_keyboard(rcv_from.id, "作者專用控制台", keyboard_panel)
     if(rcv_message.text){
       broadcast_msg(rcv_message.text)
@@ -63,55 +64,65 @@ function doPost(e){
       send_keyboard(rcv_from.id, "收到作者其他訊息", keyboard_panel)
     }
   }
-  else if(rcv_message.text){
-    if(rcv_message.text=="/start"){
-      send_keyboard(rcv_from.id, welcome_msg, keyboard_home)
-      join(rcv_from.id)
-    }
-    else if(rcv_message.text=="🔔追隨開關"){
-      var row = fan_row(rcv_from.id)
-      if(row){
-        leave(rcv_from.id, row)
+  else{
+    // fans block
+    var forward_admin = {"from_chat":rcv_from.id ,
+                         "the_message_id": rcv_message.message_id
+                        }
+    if(rcv_message.text){
+      if(rcv_message.text=="/start"){
+        send_keyboard(rcv_from.id, welcome_msg, keyboard_home)
+        join(rcv_from.id)
+      }
+      else if(rcv_message.text=="🔔追隨開關"){
+        var row = fan_row(rcv_from.id)
+        if(row){
+          leave(rcv_from.id, row)
+        }
+        else{
+          join(rcv_from.id, row)
+        }
       }
       else{
-        join(rcv_from.id, row)
+        broadcast_msg(rcv_message.text, forward_admin)
+        send_keyboard(rcv_from.id, "收到粉絲文字訊息", keyboard_home)
+      }
+    }
+    else if(rcv_message.photo){
+      var photo = rcv_message.photo[rcv_message.photo.length-1]
+      broadcast_photo(photo.file_id, forward_admin)
+      send_keyboard(rcv_from.id, "收到粉絲照片", keyboard_home)
+    }
+    else if(rcv_message.sticker){
+      forward_admin["first_name"] = rcv_from.first_name
+      broadcast_sticker(rcv_message.sticker.file_id, forward_admin)
+      if(rcv_message.sticker.is_animated){
+        send_keyboard(rcv_from.id, "收到粉絲動態貼圖", keyboard_home)
+      }
+      else{
+        send_keyboard(rcv_from.id, "收到粉絲靜態貼圖", keyboard_home)
+      }
+    }
+    else if(rcv_message.voice){
+      broadcast_voice(rcv_message.voice.file_id, forward_admin)
+      send_keyboard(rcv_from.id, "收到粉絲音訊檔案", keyboard_home)
+    }
+    else if(rcv_message.video_note){
+      broadcast_video_note(rcv_message.video_note.file_id, forward_admin)
+      send_keyboard(rcv_from.id, "收到粉絲視訊檔案", keyboard_home)
+    }
+    else if(rcv_message.document){
+      broadcast_document(rcv_message.document.file_id, forward_admin)
+      if(rcv_message.animation){
+        send_keyboard(rcv_from.id, "收到粉絲影片", keyboard_home)
+      }
+      else{
+        send_keyboard(rcv_from.id, "收到粉絲檔案", keyboard_home)
       }
     }
     else{
-      send_keyboard(rcv_from.id, "收到粉絲文字訊息", keyboard_home)
+      send_keyboard(rcv_from.id, "未收到粉絲其他訊息", keyboard_home)
     }
-  }
-  else if(rcv_message.photo){
-    send_keyboard(rcv_from.id, "收到粉絲照片", keyboard_home)
-    var photo = rcv_message.photo[rcv_message.photo.length-1]
-    if(photo){
-      send_photo(rcv_from.id, photo.file_id)
-    }
-  }
-  else if(rcv_message.sticker){
-    if(rcv_message.sticker.is_animated){
-      send_keyboard(rcv_from.id, "收到粉絲動態貼圖", keyboard_home)
-    }
-    else{
-      send_keyboard(rcv_from.id, "收到粉絲靜態貼圖", keyboard_home)
-    }
-  }
-  else if(rcv_message.voice){
-    send_keyboard(rcv_from.id, "收到粉絲音訊檔案", keyboard_home)
-  }
-  else if(rcv_message.video_note){
-    send_keyboard(rcv_from.id, "收到粉絲視訊檔案", keyboard_home)
-  }
-  else if(rcv_message.document){
-    if(rcv_message.animation){
-      send_keyboard(rcv_from.id, "收到粉絲影片", keyboard_home)
-    }
-    else{
-      send_keyboard(rcv_from.id, "收到粉絲檔案", keyboard_home)
-    }
-  }
-  else{
-    send_keyboard(rcv_from.id, "收到粉絲其他訊息", keyboard_home)
   }
   return ret
 }

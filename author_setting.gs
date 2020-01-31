@@ -2,7 +2,7 @@ var DEBUG_MODE = 1
 var PROGRAM_NAME = "Telegram 企業用機器人範本"
 var VERSION = "1.0.0"
 
-var Author_UID = 000000000 //開發者的UID，您可透過 https://t.me/uid_bot 得知
+var Admins_UID = [0000000000] //開發者們的UID，您可透過 https://t.me/uid_bot 得知
 var tg_token = "<貴單位開的 Telegram bot token>"
 var this_gas_exec_url = "https://script.google.com/macros/s/xxxxxxxxxxxxxx/exec" //貴單位開的 Google Apps Script 網路部屬連結
 

@@ -326,9 +326,8 @@ function join(uid, row_t){
   var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
   var Sheet = SpreadSheet.getSheetByName("fans list");
   var lastRow = Sheet.getLastRow();
-  var msg = "開啟追隨"
   setSheetVal("fans list", lastRow+1, _getItemColInFansList("uid"), String(uid))
-  send_msg(uid, msg)
+  send_msg(uid, "開啟追隨")
   return 0
 }
 
@@ -340,12 +339,11 @@ function leave(uid, row_t){
   else{
     row = fan_row(uid)
   }
-  var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
-  var Sheet = SpreadSheet.getSheetByName("fans list");
   if(row){
-    var msg = "取消追隨"
+    var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
+    var Sheet = SpreadSheet.getSheetByName("fans list");
     Sheet.deleteRow(row)
-    send_msg(uid, msg)
+    send_msg(uid, "取消追隨")
   }
   return 0
 }

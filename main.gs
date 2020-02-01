@@ -17,7 +17,7 @@ function doPost(e){
   }
   else if(Admins_UID.indexOf(rcv_from.id) >= 0){
     // admins block
-    send_keyboard(rcv_from.id, "作者專用控制台", keyboard_panel)
+    send_keyboard(rcv_from.id, "[管理員控制台]", keyboard_panel)
     if(rcv_message.text){
       broadcast_msg(rcv_message.text)
       send_keyboard(rcv_from.id, "已廣播作者文字訊息", keyboard_panel)
@@ -70,17 +70,27 @@ function doPost(e){
                          "the_message_id": rcv_message.message_id
                         }
     if(rcv_message.text){
-      if(rcv_message.text=="/start"){
-        send_keyboard(rcv_from.id, welcome_msg, keyboard_home)
-        join(rcv_from.id)
-      }
-      else if(rcv_message.text=="🔔追隨開關"){
-        var row = fan_row(rcv_from.id)
-        if(row){
-          leave(rcv_from.id, row)
+      if(rcv_message.text=="/start" || rcv_message.text=="🔔追隨開關"){
+        var lock = LockService.getScriptLock();
+        lock.tryLock(10000) //嘗試最多等待 10 秒完成
+        if (lock.hasLock()) {
+          if(rcv_message.text=="/start"){
+            send_keyboard(rcv_from.id, welcome_msg, keyboard_home)
+            join(rcv_from.id)
+          }
+          else{
+            var row = fan_row(rcv_from.id)
+            if(row){
+              leave(rcv_from.id, row)
+            }
+            else{
+              join(rcv_from.id, row)
+            }
+          }
+          SpreadsheetApp.flush()
         }
         else{
-          join(rcv_from.id, row)
+          send_keyboard(rcv_from.id, "請再試一次。", keyboard_home)
         }
       }
       else{

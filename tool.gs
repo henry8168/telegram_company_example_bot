@@ -113,6 +113,26 @@ function broadcast_document(file_id, forward_admin){
   return 0
 }
 
+function broadcast_poll(forward_fans, forward_admin){
+  //Forward poll message anyway
+  if(forward_admin){
+    for(var i=0; i<Admins_UID.length; i++){
+      forward_msg(Admins_UID[i], forward_admin.from_chat, forward_admin.the_message_id)
+    }
+  }
+  else{
+    var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
+    var Sheet = SpreadSheet.getSheetByName("fans list");
+    var lastRow = Sheet.getLastRow();
+    var start_row = 2
+    for(start_row=2; start_row<=lastRow; start_row++){
+      this_uid = getSheetVal("fans list", start_row, _getItemColInFansList("uid"))
+      forward_msg(this_uid, forward_fans.from_chat, forward_fans.the_message_id)
+    }
+  }
+  return 0
+}
+
 function send_keyboard(uid, msg, keyboard_t){
   var keyboard_json = {
     keyboard: keyboard_t,
@@ -134,7 +154,7 @@ function send_keyboard(uid, msg, keyboard_t){
     log.ERR("retryFetch() failed", "tools.send_keyboard")
     return undefined
   }
-  return res
+  return (JSON.parse(res)).result
 }
 
 function send_msg(uid, msg){
@@ -152,7 +172,7 @@ function send_msg(uid, msg){
     log.ERR("retryFetch() failed", "tools.send_msg")
     return undefined
   }
-  return res
+  return (JSON.parse(res)).result
 }
 
 function send_photo(uid, file_id){
@@ -170,7 +190,7 @@ function send_photo(uid, file_id){
     log.ERR("retryFetch() failed", "tools.send_photo")
     return undefined
   }
-  return res
+  return (JSON.parse(res)).result
 }
 
 function send_sticker(uid, file_id){
@@ -188,7 +208,7 @@ function send_sticker(uid, file_id){
     log.ERR("retryFetch() failed", "tools.send_sticker")
     return undefined
   }
-  return res
+  return (JSON.parse(res)).result
 }
 
 function send_voice(uid, file_id){
@@ -206,7 +226,7 @@ function send_voice(uid, file_id){
     log.ERR("retryFetch() failed", "tools.send_voice")
     return undefined
   }
-  return res
+  return (JSON.parse(res)).result
 }
 
 function send_video_note(uid, file_id){
@@ -224,7 +244,7 @@ function send_video_note(uid, file_id){
     log.ERR("retryFetch() failed", "tools.send_video_note")
     return undefined
   }
-  return res
+  return (JSON.parse(res)).result
 }
 
 function send_document(uid, file_id){
@@ -242,7 +262,35 @@ function send_document(uid, file_id){
     log.ERR("retryFetch() failed", "tools.send_document")
     return undefined
   }
-  return res
+  return (JSON.parse(res)).result
+}
+
+function send_poll(uid, poll){
+  var options_list = []
+  for(var i=0;i<poll.options.length;i++){
+    options_list.push(poll.options[i].text)
+  }
+  var payload = {
+    method: "sendPoll",
+    chat_id: String(uid),
+    question: poll.question,
+    options: JSON.stringify(options_list),
+    is_anonymous: poll.is_anonymous,
+    type: poll.type,
+    allows_multiple_answers: poll.allows_multiple_answers,
+    correct_option_id: poll.correct_option_id,
+    is_closed: poll.is_closed
+  }
+  var data = {
+    method: "post",
+    payload: payload
+  }
+  var res = retryFetch("https://api.telegram.org/bot"+tg_token+"/", data);
+  if(!res){
+    log.ERR("retryFetch() failed", "tools.send_poll")
+    return undefined
+  }
+  return (JSON.parse(res)).result
 }
 
 function forward_msg(target_chat, from_chat, the_message_id){
@@ -261,7 +309,7 @@ function forward_msg(target_chat, from_chat, the_message_id){
     log.ERR("retryFetch() failed", "tools.forward_msg")
     return undefined
   }
-  return res
+  return (JSON.parse(res)).result
 }
 
 function send_fans_number(uid){
@@ -381,7 +429,7 @@ function sleep(milliseconds)
 }
 
 function retryFetch(url, option, retry_times){
-  var max_times = 2
+  var max_times = 1
   var response = undefined
   if(retry_times){
     max_times = retry_times
@@ -390,10 +438,10 @@ function retryFetch(url, option, retry_times){
   while(count < max_times){
     try{
       if(option){
-        response = UrlFetchApp.fetch(url, option);
+        response = UrlFetchApp.fetch(url, option)
       }
       else{
-        response = UrlFetchApp.fetch(url);
+        response = UrlFetchApp.fetch(url)
       }
       return response
     }
@@ -402,7 +450,7 @@ function retryFetch(url, option, retry_times){
       sleep(500)
     }
   }
-  log.ERR("網頁不可用: "+url, "tools.retryFetch")
+  log.ERR("網頁不可用, url: "+url+", option: "+JSON.stringify(option), "tools.retryFetch")
   return undefined;
 }
 

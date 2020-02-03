@@ -60,6 +60,14 @@ function doPost(e){
       broadcast_document(rcv_message.document.file_id)
       send_keyboard(rcv_from.id, "已廣播作者檔案", keyboard_panel)
     }
+    else if(rcv_message.poll){
+      var message = send_poll(rcv_from.id, rcv_message.poll)
+      var forward_fans = {"from_chat":rcv_from.id,
+                          "the_message_id": message.message_id
+                         }
+      broadcast_poll(forward_fans, undefined)
+      send_keyboard(rcv_from.id, "已廣播作者投票議題", keyboard_panel)
+    }
     else{
       send_keyboard(rcv_from.id, "收到作者其他訊息", keyboard_panel)
     }
@@ -129,6 +137,10 @@ function doPost(e){
       else{
         send_keyboard(rcv_from.id, "收到粉絲檔案", keyboard_home)
       }
+    }
+    else if(rcv_message.poll){
+      broadcast_poll(undefined, forward_admin)
+      send_keyboard(rcv_from.id, "收到投票議題", keyboard_home)
     }
     else{
       send_keyboard(rcv_from.id, "未收到粉絲其他訊息", keyboard_home)

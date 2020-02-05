@@ -1,4 +1,3 @@
-var DEBUG_MODE = 1
 var PROGRAM_NAME = "Telegram 企業用機器人範本"
 var VERSION = "1.0.0"
 

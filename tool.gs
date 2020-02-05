@@ -312,18 +312,19 @@ function forward_msg(target_chat, from_chat, the_message_id){
   return (JSON.parse(res)).result
 }
 
+function fan_num(uid){
+  return SpreadsheetApp.openById(fans_info_spreadsheets_id).getSheetByName("fans list").getLastRow()-1
+}
+
 function send_fans_number(uid){
-  var SpreadSheet = SpreadsheetApp.openById(fans_info_spreadsheets_id);
-  var Sheet = SpreadSheet.getSheetByName("fans list");
-  var lastRow = Sheet.getLastRow();
   var keyboard = undefined
   if(Admins_UID.indexOf(uid) < 0){
-    keyboard = keyboard_home
+    keyboard = keyboard_fans
   }
   else{
-    keyboard = keyboard_panel
+    keyboard = keyboard_admins
   }
-  send_keyboard(uid, "粉絲人數: "+String(lastRow-1), keyboard)
+  send_keyboard(uid, "粉絲人數: "+String(fan_num(uid)), keyboard)
 }
 
 function delete_msg(uid, message){
